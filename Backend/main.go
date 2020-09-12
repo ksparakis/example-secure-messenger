@@ -34,4 +34,8 @@ func main() {
 	if err != nil {
 		fmt.Println("Status:", err)
 	}
+
+	defer Config.Mq.Ch.Close()
+	defer Config.Mq.Conn.Close()
+
 }

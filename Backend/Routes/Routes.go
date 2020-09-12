@@ -1,8 +1,8 @@
 package Routes
 
 import (
-	"secure-messenger/Controllers"
 	"github.com/gin-gonic/gin"
+	"secure-messenger/Controllers"
 )
 
 //SetupRouter ... Configure routes

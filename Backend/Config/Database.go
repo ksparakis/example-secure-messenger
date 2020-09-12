@@ -12,7 +12,7 @@ var DB *gorm.DB
 func BuildDB() (error){
 	ip_address := os.Getenv("MYSQL_IP")
 	if (ip_address == ""){
-		ip_address = "localhost"
+		ip_address = "127.0.0.1"
 	}
 	dsn := fmt.Sprintf("docker:docker@tcp(%s:3306)/test_db?charset=utf8&parseTime=True&loc=Local", ip_address)
 	fmt.Println(ip_address)

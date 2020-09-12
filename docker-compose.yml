@@ -22,9 +22,9 @@ services:
 
   app:
     build:
-      context: .
+      context: ./Backend
     volumes:
-      - ".:/go"
+      - "./Backend:/go"
     container_name: golang_app
     links:
       - "mysqldb:database"
@@ -35,11 +35,23 @@ services:
     tty: true
     depends_on:
       - mysqldb
+      - rabbit
 
   rabbit:
-    image: rabbitmq:3
+    image: rabbitmq:3-management
     restart: always
     container_name: rabbit
     ports:
        - "5672:5672"
+       - "15672:15672"
     tty: true
+
+webapp:
+  image: nginx
+  volumes:
+    - ./templates:/etc/nginx/templates
+  ports:
+    - "8080:80"
+  environment:
+    - NGINX_HOST=foobar.com
+    - NGINX_PORT=80

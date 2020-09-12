@@ -1,10 +1,11 @@
 package Controllers
 
 import (
-	"secure-messenger/Models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"secure-messenger/Models"
+	"secure-messenger/Queue"
 )
 //GetUsers ... Get all users
 func GetAllUsers(c *gin.Context) {
@@ -15,8 +16,8 @@ func GetAllUsers(c *gin.Context) {
 
 //CreateUser ... Create User
 func CreateUser(c *gin.Context) {
-	username := c.Params.ByName("username")
-	pubkey := c.Params.ByName("pubkey")
+	username := c.Params.ByName("Username")
+	pubkey := c.Params.ByName("Public_key")
 
 	var user Models.User
 	user.Pubkey = []byte(pubkey)
@@ -33,6 +34,13 @@ func CreateUser(c *gin.Context) {
 		fmt.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, user)
+		err = Queue.CreateUsersQueue(user.Username)
+		if err != nil{
+			fmt.Println(err)
+			c.AbortWithStatus(http.StatusInternalServerError)
+		} else{
+			c.JSON(http.StatusOK, user)
+		}
+
 	}
 }
