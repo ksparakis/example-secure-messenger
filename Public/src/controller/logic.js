@@ -2,9 +2,9 @@ var crypto = require("../util/rsa-util");
 var api = require("../repo/goapi");
 var State = require("../repo/state");
 module.exports = {
-    SendMessage: function(state, msg){
-        enc_msg = crypto.encrypt_msg(msg, state.Contacts[state.Current]);
-        api.Send_Message(state.Username, state.Current, enc_msg)
+    SendMessage: function(state, msg, draw){
+        enc_msg = crypto.encrypt_msg(msg, state.get_contacts()[state.get_current()]);
+        api.Send_Message(state.get_username(), state.get_current(), enc_msg, msg, state, draw)
     },
 
     Logout: function(state){
@@ -16,7 +16,7 @@ module.exports = {
     PollUsersList: function (state, callback){
         function refresh() {
             if (state.Username) {
-                api.Get_Users(callback);
+                api.Get_Users(state, callback);
                 setTimeout(refresh, 5000);
             }
             // ...
@@ -34,7 +34,7 @@ module.exports = {
                 }
             }
             // initial call, or just call refresh directly
-            setTimeout(refresh, 5000);
+            setTimeout(refresh, 10000);
      },
 
     on_message: function (message) {
@@ -56,8 +56,7 @@ module.exports = {
 
 
         // api call to login
-
-        //api.Login_User(state.Username, state.Public_key, callback);
+        api.Login_User(state.Username, state.Public_key, callback);
 
     },
 

@@ -74,14 +74,12 @@ func ConsumeUserQueue(username string) ([]Msg_body, error){
 func AddMessageToUserQueue(msg Msg_body) error{
 	msg_json, err  := json.Marshal(msg)
 	if err != nil{
+		fmt.Printf("FAILED HERE: %v", err)
 		return err
 	}
-	fmt.Printf("rec: %v, send:%v", msg.Recipient, msg.Sender)
+	fmt.Printf("rec: %v, send:%v\n\n", msg.Recipient, msg.Sender)
 	fmt.Printf("JSON: %v\n\n\n", msg_json)
 
-	var verify = make(chan amqp.Return)
-
-	Config.Mq.Ch.NotifyReturn(verify)
 
 	err = Config.Mq.Ch.Publish(
 		"",     // exchange

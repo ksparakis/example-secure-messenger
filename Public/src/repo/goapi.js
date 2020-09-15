@@ -1,5 +1,4 @@
 const axios = require('axios').default;
-const parser = require('../util/data-parser');
 /**
  * @return {string}
  */
@@ -12,12 +11,13 @@ let config={headers:{
     }};
 
 module.exports = {
-    Get_Users: function (state){
+    Get_Users: function (state, draw){
         let url = Get_API_Url() + "users";
         axios.get(url, config)
             .then(resp => {
-                console.log(resp.data);
-                parser.parse_new_contacts( resp, state)
+                //console.log(resp.data);
+                state.parse_new_contacts(resp.data);
+                draw(state);
             })
             .catch(err => {
                 // Handle Error Here
@@ -47,12 +47,15 @@ module.exports = {
             });
     },
 
-    Send_Message: function (sender, recipient, message){
+    Send_Message: function (sender, recipient, message, unencMsg, state, draw){
+        console.log("Sending message to: "+ recipient);
         const json = JSON.stringify({sender: sender, recipient: recipient, message: message });
         let url = Get_API_Url() + "message";
         axios.post(url, json)
             .then(resp => {
                 console.log(resp.data);
+                state.add_new_message({sender: sender, recipient: recipient, message: unencMsg}, recipient);
+                draw(state)
             })
             .catch(err => {
                 // Handle Error Here
@@ -62,17 +65,21 @@ module.exports = {
 
     },
 
-    Get_Messages: function (state){
+    Get_Messages: function (state, draw){
         let url = Get_API_Url() + "user/"+state.Username;
+        console.log("URL TO HEAVEN "+url)
         axios.get(url, config)
             .then(resp => {
                 console.log(resp.data);
-                parser.parse_new_msgs(resp, state)
+                if(resp.data.length > 0){
+
+                    state.parse_new_messages(resp.data);
+                    draw(state);
+                }
             })
             .catch(err => {
                 // Handle Error Here
-                alert("Error: Login failed restart app");
-                console.error(err);
+                //console.error("No new messages");
             });
     },
 };
