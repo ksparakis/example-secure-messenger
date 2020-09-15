@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	Username string `json:"Username";gorm:"unique;primaryKey"`
-	Pubkey []byte `json:"Public_Key"`
+	Pubkey []byte `json:"Pubkey"`
 }
 
 func (d *User) TableName() string{

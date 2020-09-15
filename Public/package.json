@@ -1,0 +1,29 @@
+{
+  "name": "secure-messenger-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "node_modules/.bin/browserify src/main.js -o bundle.js",
+    "watch": "node_modules/.bin/watchify src/main.js -o bundle.js"
+  },
+  "author": "konstantino sparakis",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.6.0",
+    "axios": "^0.20.0",
+    "backbone": "^1.4.0",
+    "crypto": "^1.0.1",
+    "install": "^0.13.0",
+    "jquery": "^3.5.1",
+    "jsencrypt": "^3.0.0-rc.1",
+    "keypair": "^1.0.1",
+    "node-rsa": "^1.1.1",
+    "npm": "^6.14.8",
+    "sockjs": "^0.3.21",
+    "stompjs": "^2.3.3",
+    "watchify": "^3.11.1",
+    "websocket": "^1.0.32",
+    "ws": "^7.3.1"
+  }
+}

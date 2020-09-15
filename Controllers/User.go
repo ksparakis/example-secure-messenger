@@ -17,7 +17,8 @@ func GetAllUsers(c *gin.Context) {
 //CreateUser ... Create User
 func CreateUser(c *gin.Context) {
 	username := c.Params.ByName("Username")
-	pubkey := c.Params.ByName("Public_key")
+	pubkey := c.Params.ByName("Pubkey")
+	fmt.Printf("\n\n\n\nPUB KEYYY %v\n\n\n", pubkey)
 
 	var user Models.User
 	user.Pubkey = []byte(pubkey)
@@ -34,6 +35,8 @@ func CreateUser(c *gin.Context) {
 		fmt.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
+		fmt.Printf("USER %v\n\n\n\n", user)
+
 		err = Queue.CreateUsersQueue(user.Username)
 		if err != nil{
 			fmt.Println(err)
