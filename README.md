@@ -6,6 +6,7 @@ The golang backend boots up a Rest api built on the Gin Framework, which communi
 We use Mysql to store public keys from users, and register users, while we use the RabbitMQ to create
 a Queue where the client can subscribe and recieve any messages instantaneously instead of polling the backend.
 
+
 ### REST API
 
 #### POST /user
@@ -26,13 +27,24 @@ json: {"sender":"the senders username", recipient:"the recipients username", "me
 ## Simple Frontend
 The front end is a simple javascript/html website designed
  to plug into the backend and connect to rabbit mq for recieving msgs
- 
- 
+
+
 # How to Execute Code:
 
 Everything is containerized so all you simply have to do is download this git project locally then run:
 
-docker-compose build
-docker-compose up
+`docker-compose build`
+`docker-compose up`
 
 then visit localhost:80 in a browser.
+ 
+### FRONT END
+
+once code is up and running please visit localhost:8080, in your browser and you should have access to the secure messenger app
+
+### RABBIT MQ
+you can see whats gooing on with rabbit mq by visiting localhost:15672, password and username guest
+
+## Known Issues
+- Sometimes test_db doesnt load properly when creating the docker container and you need to go to adminer which is localhost:8082, login there and create test_db
+- Displaying the recieved messages isn't working right now.
